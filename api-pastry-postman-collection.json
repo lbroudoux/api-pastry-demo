@@ -11,6 +11,20 @@
 			"item": [
 				{
 					"name": "Get list of pastries",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "5b60437c-3fc5-42c1-a50a-2768ea62b809",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"auth": {
 							"type": "noauth"
@@ -76,21 +90,18 @@
 							"script": {
 								"id": "3f8c3ee7-4970-4598-a4b4-3cb24fea3a66",
 								"exec": [
-									"var expectedStatus = globals[\"name\"];",
+									"var expectedName = globals[\"name\"];",
 									"var jsonData = JSON.parse(responseBody);",
 									"",
 									"var schema = {",
-									" \"type\": \"array\",",
-									" \"items\": {",
-									"   \"type\": \"object\",",
-									"   \"properties\": {",
-									"      \"name\": { \"type\": \"string\" },",
-									"      \"country\": { \"type\": \"string\" },",
-									"      \"type\": { \"type\": \"string\" },",
-									"      \"rating\": { \"type\": \"number\" },",
-									"      \"status\": { \"type\": \"string\", \"enum\": [expectedStatus] }",
-									"   }",
-									" }",
+									"  \"type\": \"object\",",
+									"  \"properties\": {",
+									"    \"name\": { \"type\": \"string\", \"enum\": [expectedName] },",
+									"    \"description\": { \"type\": \"string\" },",
+									"    \"size\": { \"type\": \"string\" },",
+									"    \"price\": { \"type\": \"number\" },",
+									"    \"status\": { \"type\": \"string\" }",
+									"  }",
 									"};",
 									"",
 									"tests[\"Valid status in response\"] = tv4.validate(jsonData, schema);"
@@ -110,11 +121,14 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "{{baseUrl}}/pastry/:name",
+							"raw": "http:///pastry/:name",
 							"host": [
-								"{{baseUrl}}"
+								"http:"
 							],
+							"port": "",
 							"path": [
+								"",
+								"",
 								"pastry",
 								":name"
 							],
@@ -168,7 +182,7 @@
 							"body": "{\n    \"name\": \"Eclair Cafe\",\n    \"description\": \"Delicieux Eclair au Cafe pas calorique du tout\",\n    \"size\": \"M\",\n    \"price\": 2.5,\n    \"status\": \"available\"\n}"
 						},
 						{
-							"name": "Baba Rhum",
+							"name": "Millefeuille",
 							"originalRequest": {
 								"method": "GET",
 								"header": [],
@@ -197,7 +211,7 @@
 							"_postman_previewlanguage": "json",
 							"header": null,
 							"cookie": [],
-							"body": "{\n    \"name\": \"Baba Rhum\",\n    \"description\": \"Delicieux Baba au Rhum pas calorique du tout\",\n    \"size\": \"L\",\n    \"price\": 3.2,\n    \"status\": \"available\"\n}"
+							"body": "{\n    \"name\": \"Millefeuille\",\n    \"description\": \"Delicieux Millefeuille pas calorique du tout\",\n    \"size\": \"L\",\n    \"price\": 4.4,\n    \"status\": \"available\"\n}"
 						}
 					]
 				}
