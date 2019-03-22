@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions name="ProductEndpointService" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+        xmlns:ns1="http://schemas.xmlsoap.org/soap/http" xmlns:tns="http://ws.products.lbroudoux.github.com/" targetNamespace="http://ws.products.lbroudoux.github.com/">
+
+    <wsdl:types>
+        <xsd:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://ws.products.lbroudoux.github.com/" elementFormDefault="unqualified" 
+                targetNamespace="http://ws.products.lbroudoux.github.com/" version="1.0">
+
+            <!-- Document wrapped literal style (see https://www.ibm.com/support/knowledgecenter/SSFTDH_7.5.0/com.ibm.wbpm.wid.integ.doc/access/topics/rwsdlstyle.html) -->    
+            <xsd:element name="getProducts" type="tns:getProducts"/>
+            <xsd:element name="getProductsResponse" type="tns:getProductsResponse"/>
+            <xsd:element name="getProductByName" type="tns:getProductByName"/>
+            <xsd:element name="getProductByNameResponse" type="tns:getProductByNameResponse"/>
+
+            <xsd:complexType name="Product">
+                <xsd:sequence>
+                    <xsd:element minOccurs="1" name="sku" type="xsd:string"/>
+                    <xsd:element minOccurs="1" name="name" type="xsd:string"/>
+                    <xsd:element minOccurs="1" name="short_desc" type="xsd:string"/>
+                    <xsd:element minOccurs="1" name="long_desc" type="xsd:string"/>
+                    <xsd:element minOccurs="1" name="price" type="xsd:string"/>
+                    <xsd:element minOccurs="1" name="quantity" type="xsd:string"/>
+                    <xsd:element minOccurs="1" name="size" type="xsd:string"/>
+                    <xsd:element minOccurs="1" name="category" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <xsd:complexType name="getProducts">
+                <xsd:sequence>
+                    <xs:element minOccurs="0" name="category" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="getProductsResponse">                
+                <xsd:element name="product" maxOccurs="unbounded" minOccurs="0" type="tns:Product"/>
+            </xsd:complexType>
+            <xsd:complexType name="getProductByName">
+                <xsd:sequence>
+                    <xs:element minOccurs="0" name="name" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="getProductByNameResponse">
+                <xsd:sequence>
+                    <xsd:element name="product" minOccurs="1" maxOccurs="1" type="tns:Product"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:schema>
+    </wsdl:types>
+
+    <wsdl:message name="getProducts">
+        <wsdl:part element="tns:getProducts" name="parameters">
+        </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="getProductsResponse">
+        <wsdl:part element="tns:getProductsResponse" name="parameters">
+        </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="getProductByName">
+        <wsdl:part element="tns:getProductByName" name="parameters">
+        </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="getProductByNameResponse">
+        <wsdl:part element="tns:getProductByNameResponse" name="parameters">
+        </wsdl:part>
+    </wsdl:message>
+
+    <wsdl:portType name="ProductEndpoint">
+        <wsdl:operation name="getProducts">
+            <wsdl:input message="tns:getProducts" name="getProducts"></wsdl:input>
+            <wsdl:output message="tns:getProductsResponse" name="getProductsResponse"></wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getProductByName">
+            <wsdl:input message="tns:getProductByName" name="getProductByName"></wsdl:input>
+            <wsdl:output message="tns:getProductByNameResponse" name="getProductByNameResponse"></wsdl:output>
+        </wsdl:operation>
+    </wsdl:portType>
+
+    <wsdl:binding name="ProductEndpointServiceSoapBinding" type="tns:ProductEndpoint">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="getProducts">
+            <soap:operation soapAction="" style="document"/>
+            <wsdl:input name="getProducts">
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="getProductsResponse">
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getProductByName">
+            <soap:operation soapAction="" style="document"/>
+            <wsdl:input name="getProductByName">
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="getProductByNameResponse">
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+
+    <wsdl:service name="ProductEndpointService">
+        <wsdl:port binding="tns:ProductEndpointServiceSoapBinding" name="ProductEndpointPort">
+            <soap:address location="http://192.168.99.100:32522/cxf/patient" />
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>

@@ -1,0 +1,214 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+  	<title>API Pastry Demo</title>
+
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/main.css">
+  </head>
+  <body>
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-menu">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">
+            <h1 class="logo">
+              <img alt="Brand" src="images/cupcake.png" height="42" width="42"/>
+            </h1>
+          </a>
+        </div>
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+          <ul class="nav navbar-nav" style="padding-left: 50px">
+            <li><h3 style="width: 350px">API Pastry Demo</h3></li>
+          </ul>
+          <div class="navbar-form navbar-right" role="search" style="padding-top: 5px">
+            <div class="form-group">
+              <input id="api_endpoint" type="text" class="form-control" placeholder="API_ENDPOINT">
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+    <div class="container-fluid">
+      <div class="jumbotron">
+        <h2>API Pastry Agile Integration demo</h2>
+    	  <p>This demo is to demonstrate Red Hat Agile Integration solutions on OpenShift</p>
+        </div>
+    </div>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-8">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h2 class="panel-title"><img src="images/doughnut.png" height="28" width="28"> Pastry Widget</h2>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <br/>
+                <div id="pastriesDiv"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h3 class="panel-title">Control</h3>
+            </div>
+            <div class="panel-body">
+              <div class="form-horizontal">
+                <div class="form-group">
+                  <label for="username" class="col-lg-3 control-label">Username</label>
+                  <div class="col-lg-6">
+                    <input type="text" class="form-control" id="username" name="username" placeholder="John Doe">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="email" class="col-lg-3 control-label">Email</label>
+                  <div class="col-lg-6">
+                    <input type="text" class="form-control" id="email" name="email" placeholder="john.doe@gmail.com">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="js/jquery.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script>
+    var API_ENDPOINT = "http://localhost:9090";
+    var MAX_MSG_DISPLAY = 8;
+
+    var username = "John Doe";
+    var email = "john.doe@gmail.com";
+
+    var products = [
+      {
+        "name": "Eclair au Chocolat",
+        "description":"Delicieux Eclair au Chocolat pas calorique du tout",
+        "size":"M",
+        "price":2.2,
+        "status":"available"
+      },
+      {
+        "name":"Tartelette au Citron",
+        "description":"Delicieuse Tartelette au Citron pas calorique du tout",
+        "size":"S",
+        "price":2.0,
+        "status":"available"
+      },
+      {
+        "name":"Eclair au Cafe",
+        "description":"Delicieux Eclair au Cafe pas calorique du tout",
+        "size":"M",
+        "price":2.5,
+        "status":"available"
+      },
+      {
+        "name":"Paris-Brest",
+        "description":"Delicieux Paris-Brest pas calorique du tout",
+        "size":"L",
+        "price":4.0,
+        "status":"available"
+      }
+    ];
+    var msgsocket = null;
+    var eventMsgArray = [];
+
+    $("#api_endpoint").blur(function(){
+      var value = $("#api_endpoint").val();
+      if (value === null || value === "") {
+        $("#api_endpoint").val(API_ENDPOINT);
+      } else {
+        API_ENDPOINT = value;
+      }
+    });
+
+    $("#username").blur(function() {
+      var username = $(this).val();
+    });
+    $("#email").blur(function() {
+      var email = $(this).val();
+    });
+
+    $(document).ready(function() {
+      fetchPastries();
+      populatePastries();
+    });
+
+    function fetchPastries() {
+      $.ajax({
+        type: "GET",
+        url: API_ENDPOINT+"/pastry",
+        dataType: 'json',
+        contentType: 'application/json'
+      })
+      .done(function() {
+      })
+      .fail(function(result) {
+      })
+      .always(function(result) {
+        console.log('In always: ' + JSON.stringify(result));
+        if (result != null) {
+          if (result.status == null) {
+            products = result;
+            populatePastries()
+          }
+        } else if (result.status === 404 || result.status === 0) {
+          alert("Sorry but pastries are not available ...");
+        }
+      });
+    }
+
+    function populatePastries() {
+      $('#pastriesDiv').html('');
+      var pastriesDivContent = "";
+      $.each(products, function (i, item) {
+        var prodContent = '<div class="col-md-3"><img src="images/';
+        prodContent += item.name.toLowerCase() + '.jpg" class="img-responsive img-circle"/>';
+        prodContent += '<div class="text-center"><b>' + item.name;
+        prodContent += '</b><br/> Size ' + item.size;
+        prodContent += ' - ' + item.price + ' USD<br/>';
+        prodContent += '<br/><a class="btn btn-danger" role="button" onclick="likePastry(\'' + item.name + '\')">Like it!</a>';
+        prodContent += '<br/><br/></div></div>';
+        pastriesDivContent += prodContent;
+      });
+      $('#pastriesDiv').html(pastriesDivContent);
+    }
+
+    function likePastry(name) {
+      console.log("Liking " + name);
+      var pastryLike = {'pastry': name, 'username': username, 'email': email};
+      $.ajax({
+        type: "POST",
+        url: SHOP_HOST+"/pastry/like",
+        dataType: 'json',
+        contentType: 'application/json',
+        data: JSON.stringify(pastryLike),
+      })
+      .done(function() {
+      })
+      .fail(function(result) {
+      })
+      .always(function(result) {
+        console.log('In always: ' + JSON.stringify(result));
+        if (result != null) {
+          if (result.status === null) {
+            alert("Thanks for liking " + name + "!");
+          } else if (result.status === 404) {
+            alert("Sorry, there's an issue... " + result.error);
+          }
+        }
+      });  
+    }
+    </script>
+  </body>
+</html>

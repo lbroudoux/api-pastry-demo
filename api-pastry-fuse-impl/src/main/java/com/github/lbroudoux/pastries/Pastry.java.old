@@ -1,0 +1,131 @@
+
+package com.github.lbroudoux.pastries;
+
+import javax.annotation.Generated;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@Generated("org.jsonschema2pojo")
+@JsonPropertyOrder({
+    "name",
+    "description",
+    "size",
+    "price",
+    "status"
+})
+public class Pastry {
+
+    @JsonProperty("name")
+    private String name;
+    @JsonProperty("description")
+    private String description;
+    @JsonProperty("size")
+    private String size;
+    @JsonProperty("price")
+    private double price;
+    @JsonProperty("status")
+    private String status;
+
+    /**
+     * 
+     * @return
+     *     The name
+     */
+    @JsonProperty("name")
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * 
+     * @param name
+     *     The name
+     */
+    @JsonProperty("name")
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    /**
+     * 
+     * @return
+     *     The description
+     */
+    @JsonProperty("description")
+    public String getDescription() {
+        return description;
+    }
+
+    /**
+     * 
+     * @param description
+     *     The description
+     */
+    @JsonProperty("description")
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    /**
+     * 
+     * @return
+     *     The size
+     */
+    @JsonProperty("size")
+    public String getSize() {
+        return size;
+    }
+
+    /**
+     * 
+     * @param size
+     *     The size
+     */
+    @JsonProperty("size")
+    public void setSize(String size) {
+        this.size = size;
+    }
+
+    /**
+     * 
+     * @return
+     *     The price
+     */
+    @JsonProperty("price")
+    public double getPrice() {
+        return price;
+    }
+
+    /**
+     * 
+     * @param price
+     *     The price
+     */
+    @JsonProperty("price")
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    /**
+     * 
+     * @return
+     *     The status
+     */
+    @JsonProperty("status")
+    public String getStatus() {
+        return status;
+    }
+
+    /**
+     * 
+     * @param status
+     *     The status
+     */
+    @JsonProperty("status")
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+}

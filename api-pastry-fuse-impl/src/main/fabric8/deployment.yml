@@ -1,0 +1,31 @@
+spec:
+  replicas: 1
+  template:
+    spec:
+      containers:
+        - 
+          resources:
+            requests:
+              cpu: "0.2"
+#              memory: 256Mi
+            limits:
+              cpu: "1.0"
+#              memory: 256Mi
+          env:
+          - name: SPRING_APPLICATION_JSON
+            value: '{"server":{"undertow":{"io-threads":1, "worker-threads":2 }}}'
+          - name: PRODUCT_WS_URL
+            value: https://microcks.app.itix.fr/soap/ProductService/1.0.0
+          - name: KAFKA_BROKER_URL
+            value: my-cluster-kafka-bootstrap.amq-streams.svc.cluster.local:9092
+          readinessProbe:
+            httpGet:
+              path: /openapi.json
+              port: 8080
+            timeoutSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /openapi.json
+              port: 8080
+            timeoutSeconds: 10
+            failureThreshold: 5

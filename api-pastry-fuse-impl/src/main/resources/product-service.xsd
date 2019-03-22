@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://ws.products.lbroudoux.github.com/" elementFormDefault="unqualified" 
+    targetNamespace="http://ws.products.lbroudoux.github.com/" version="1.0">
+
+    <xs:element name="getProductsResponse" type="tns:getProductsResponse"/>
+
+    <xs:complexType name="getProductsResponse">
+        <xs:sequence>
+            <xs:element name="product" maxOccurs="unbounded" minOccurs="0" type="tns:Product"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="Product">
+        <xs:sequence>
+            <xs:element minOccurs="1" name="sku" type="xs:string"/>
+            <xs:element minOccurs="1" name="name" type="xs:string"/>
+            <xs:element minOccurs="1" name="short_desc" type="xs:string"/>
+            <xs:element minOccurs="1" name="long_desc" type="xs:string"/>
+            <xs:element minOccurs="1" name="price" type="xs:string"/>
+            <xs:element minOccurs="1" name="quantity" type="xs:string"/>
+            <xs:element minOccurs="1" name="size" type="xs:string"/>
+            <xs:element minOccurs="1" name="category" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

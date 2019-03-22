@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:cxf="http://camel.apache.org/schema/cxf"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd        http://camel.apache.org/schema/spring       http://camel.apache.org/schema/spring/camel-spring.xsd        http://camel.apache.org/schema/cxf          http://camel.apache.org/schema/cxf/camel-cxf.xsd">
+    
+    <!-- Start of user configuration -->
+    <cxf:cxfEndpoint id="productWS"
+        address="${product-ws-url}"
+        serviceClass="com.github.lbroudoux.products.ws.ProductEndpoint"/>
+
+    <bean class="io.example.openapi.GetProductsComposer" id="getProductsComposer"/>
+    <bean class="io.example.openapi.GetProductsResponseToPastryListTransformer" id="getProductsTransformer"/>
+    <bean class="io.example.openapi.GetProductByNameComposer" id="getProductByNameComposer"/>
+    <bean class="io.example.openapi.GetProductByNameResponseToPastryTransformer" id="getProductTransformer"/>
+    <bean class="io.example.openapi.EchoProcessor" id="echoProcessor"/>
+    <!-- End of user configuration -->
+
+    <camelContext id="context1" xmlns="http://camel.apache.org/schema/spring">
+        
+        <onException>
+            <exception>java.lang.Exception</exception>
+            <handled>
+                <constant>true</constant>
+            </handled>
+            <setHeader headerName="Exchange.HTTP_RESPONSE_CODE">
+                <constant>500</constant>
+            </setHeader>
+            <setBody>
+                <simple>${exception.message}</simple>
+            </setBody>
+        </onException>
+        <!-- <restConfiguration apiContextPath="/openapi.json" component="servlet"/> -->
+        <restConfiguration apiContextPath="/" component="servlet" enableCORS="true">
+            <corsHeaders key="Access-Control-Allow-Origin" value="*"/>
+            <corsHeaders key="Access-Control-Allow-Methods" value="GET, HEAD, POST, PUT, DELETE, TRACE, OPTIONS, CONNECT, PATCH"/>
+            <corsHeaders key="Access-Control-Allow-Headers" value="Origin, Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers"/>
+        </restConfiguration>
+
+        <rest enableCORS="true" id="rest1" path="/">
+            <get id="openapi.json" produces="application/json" uri="openapi.json">
+                <description>Gets the openapi document for this service</description>
+                <route id="rest1-route1">
+                    <setHeader headerName="Exchange.CONTENT_TYPE" id="setHeader-route1">
+                        <constant>application/vnd.oai.openapi+json</constant>
+                    </setHeader>
+                    <setBody id="setBody-route1">
+                        <simple>resource:classpath:openapi.json</simple>
+                    </setBody>
+                </route>
+            </get>
+        </rest>
+        <rest bindingMode="json" enableCORS="true" id="rest2" path="">
+            <get id="GetPastries" uri="/pastry">
+                <to uri="direct:GetPastries"/>
+            </get>
+            <get id="GetPastryByName" uri="/pastry/{name}">
+                <description>Get Pastry by name</description>
+                <to uri="direct:GetPastryByName"/>
+            </get>
+            <post id="LikePastry" uri="/pastry/like">
+                <description>Like Pastry from user</description>
+                <to uri="direct:LikePastry"/>
+            </post>
+        </rest>
+        <route id="route-7f3dbf12-fab4-46cc-9526-2823d400d0ec">
+            <from id="from-741a66cd-d150-4e91-878f-5f5575928f31" uri="direct:GetPastries"/>
+            <!-- Start of user code -->
+            <log id="log1-getProducts" message="GetPastries request processing"/>
+            <setBody>
+               <constant>pastry</constant> 
+            </setBody>
+            <!-- Alternative for more complex payload -->
+            <!-- <process id="process-getProducts" ref="getProductsComposer"/> -->
+            <to id="productWS-getProducts" uri="cxf:bean:productWS?defaultOperationName=getProducts"/>
+            <process id="process-getProductsResponse" ref="getProductsTransformer"></process>
+            <!-- End of user code -->
+            <!-- <to id="to-1249cbef-4a65-4962-b8bd-4b382744dcb7" uri="direct:501"/> -->
+        </route>
+        <route id="route-d072819f-2f2e-4aef-ac3b-69e7cd66b6c2">
+            <from id="from-dc5c2eef-9877-48c6-9ada-05ac81f23a64" uri="direct:GetPastryByName"/>
+            <!-- Start of user code -->
+            <log id="log1-getProductByName" message="GetPastryByName request processing"/>
+            <log id="log2-getProductByName" message="Pastry name: ${headers.name}"/>
+            <setBody>
+               <simple>${headers.name}</simple> 
+            </setBody>
+            <!-- Alternative for more complex payload -->
+            <!-- <process id="process-getProductByNmae" ref="getProductByNameComposer"/> -->
+            <to id="productWS-getProductByName" uri="cxf:bean:productWS?defaultOperationName=getProductByName" />
+            <process id="process-getProductByNameResponse" ref="getProductTransformer"></process>
+            <!-- End of user code -->
+            <!-- <to id="to-e235352a-8941-47f3-b657-9ffbe116d56e" uri="direct:501"/> -->
+        </route>
+        <route id="route-d072819f-2f2e-4aef-ac3b-69e7cd66b6c3">
+            <from id="from-dc5c2eef-9877-48c6-9ada-05ac81f23a65" uri="direct:LikePastry"/>
+            <!-- Start of user code -->
+            <log id="log1-likePastry" message="LikePastry request processing"/>
+            <log id="log2-likePastry" message="Payload: ${body}"/>
+            <!-- <to id="kafka-publishLike" uri="kafka:pastries.likes?brokers=my-cluster-kafka-bootstrap-amq-streams.apps.laurent311.openhybridcloud.io:443&amp;groupId=api-pastry-fuse-impl&amp;sslKeystoreLocation=/Users/lbroudou/Development/local/tests/api-pastry-fuse-impl/openshift-router.jks&amp;sslKeystorePassword=changeit&amp;sslKeyPassword=changeit"/> -->
+            <marshal>
+                <json library="Jackson"/>
+            </marshal>
+            <process id="process-publishLike" ref="echoProcessor"></process>
+            <to id="kafka-publishLike" uri="kafka:pastries.likes?brokers={{kafka-broker-url}}&amp;groupId=api-pastry-fuse-impl"/>
+            <log id="log3-likePastry" message="Kafka publication done!"/>
+            <setBody>
+               <constant>Published</constant> 
+            </setBody>
+            <!-- End of user code -->
+            <!-- <to id="to-e235352a-8941-47f3-b657-9ffbe116d56f" uri="direct:501"/> -->
+        </route>
+        <route id="route2">
+            <from id="from-route2" uri="direct:501"/>
+            <log id="log-route2" message="API operation not yet implemented: ${headers.CamelHttpMethod} ${headers.CamelHttpPath}"/>
+            <setHeader headerName="Exchange.HTTP_RESPONSE_CODE" id="setHeader-route2">
+                <constant>501</constant>
+            </setHeader>
+            <setBody id="setBody-route2">
+                <simple>API operation not implemented: ${headers.CamelHttpMethod} ${headers.CamelHttpPath}</simple>
+            </setBody>
+        </route>
+    </camelContext>
+</beans>

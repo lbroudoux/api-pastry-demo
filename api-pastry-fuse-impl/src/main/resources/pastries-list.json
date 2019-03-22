@@ -1,0 +1,23 @@
+[
+    {
+        "name": "some text",
+        "description": "some text",
+        "size": "some text",
+        "price": 8.55,
+        "status": "some text"
+    },
+    {
+        "name": "some text",
+        "description": "some text",
+        "size": "some text",
+        "price": 5.55,
+        "status": "some text"
+    },
+    {
+        "name": "some text",
+        "description": "some text",
+        "size": "some text",
+        "price": 15.55,
+        "status": "some text"
+    }
+]
