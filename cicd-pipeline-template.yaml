@@ -1,0 +1,87 @@
+apiVersion: template.openshift.io/v1
+kind: Template
+labels:
+  template: api-pastry-pipeline
+metadata:
+  annotations:
+    description: API Pastry Deployment Pipeline
+  name: api-pastry-pipeline
+objects:
+- apiVersion: v1
+  kind: BuildConfig
+  metadata:
+    labels:
+      name: api-pastry-pipeline
+    name: api-pastry-pipeline
+  spec:
+    output: null
+    postCommit: null
+    resources: null
+    runPolicy: Serial
+    source:
+      type: None
+    strategy:
+      jenkinsPipelineStrategy:
+        env:
+        - name: GIT_BRANCH
+          value: master
+        - name: GIT_REPO
+          value: https://github.com/lbroudoux/api-pastry-demo.git
+        - name: ANSIBLE_PROD_INVENTORY
+          value: 3scale-api-pastry-prod
+        - name: ANSIBLE_JOB_TEMPLATE
+          value: Deploy an API to 3scale
+        - name: TOWER_SERVER
+          value: tower
+        jenkinsfile: |-
+          #!/usr/bin/env groovy
+          import groovy.json.JsonOutput
+
+          node('nodejs') {
+            def towerExtraVars = [
+                git_repo: params.GIT_REPO,
+                git_branch: params.GIT_BRANCH,
+                openapi_file: "api-pastry-openapi.json",
+                threescale_cicd_openapi_smoketest_operation: "GetPastries",
+                threescale_cicd_api_backend_scheme: "http",
+                threescale_cicd_openapi_file_format: "json"
+            ]
+
+            /*
+            stage ('Build in Dev') {
+              openshiftBuild(buildConfig: 'api-pastry-impl',
+                namespace: 'api-pastry-dev', showBuildLogs: 'true')
+            }
+            stage ('Deploy in Dev') {
+              openshiftDeploy(namespace: 'api-pastry-dev',
+                deploymentConfig: 'api-pastry-impl')
+            }
+            */
+
+            stage('Test in Dev') {
+              // Add implementation contract test here.
+              microcksTest(apiURL: 'https://microcks.app.itix.fr/api',
+                serviceId: 'API Pastry:1.0.0',
+                testEndpoint: 'http://api-pastry-fuse-impl-api-pastry-dev.app.itix.fr/',
+                runnerType: 'POSTMAN', verbose: 'true')
+            }
+
+            stage ('Promote to Prod') {
+              openshiftTag(namespace: 'api-pastry-dev', sourceStream: 'api-pastry-fuse-impl',
+                sourceTag: 'latest', destinationStream: 'api-pastry-fuse-impl', destinationTag: 'promoteToProd')
+            }
+
+            stage('Deploy to Prod') {
+              openshiftDeploy(deploymentConfig: 'api-pastry-fuse-impl', namespace: 'api-pastry-prod')
+              openshiftScale(deploymentConfig: 'api-pastry-fuse-impl', namespace: 'api-pastry-prod', replicaCount: '2')
+              // Deploy the API to 3scale
+              ansibleTower towerServer: params.TOWER_SERVER,
+                          inventory: params.ANSIBLE_PROD_INVENTORY,
+                          jobTemplate: params.ANSIBLE_JOB_TEMPLATE,
+                          extraVars: JsonOutput.toJson(towerExtraVars)
+              // Force redeployment of gateway
+              openshiftDeploy(deploymentConfig: 'api-pastry-api', namespace: 'api-pastry-prod')
+            }
+
+          }
+      type: JenkinsPipeline
