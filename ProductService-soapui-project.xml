@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:soapui-project id="255e1823-a012-43cc-9224-d94548ff5701" activeEnvironment="Default" name="ProductService" resourceRoot="" soapui-version="5.2.1" xmlns:con="http://eviware.com/soapui/config"><con:settings/><con:interface xsi:type="con:WsdlInterface" id="c0dda3b7-9456-4fb1-b138-adc0f736c673" wsaVersion="NONE" name="ProductEndpointServiceSoapBinding" type="wsdl" bindingName="{http://ws.products.lbroudoux.github.com/}ProductEndpointServiceSoapBinding" soapVersion="1_1" anonymous="optional" definition="file:/Users/lbroudou/Development/local/tests/myservice.wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="file:/Users/lbroudou/Development/local/tests/myservice.wsdl"><con:part><con:url>file:/Users/lbroudou/Development/local/tests/myservice.wsdl</con:url><con:content><![CDATA[<wsdl:definitions name="ProductEndpointService" targetNamespace="http://ws.products.lbroudoux.github.com/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" xmlns:tns="http://ws.products.lbroudoux.github.com/">
+  <wsdl:types>
+    <xsd:schema elementFormDefault="unqualified" targetNamespace="http://ws.products.lbroudoux.github.com/" version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xsd:element name="getProducts" type="tns:getProducts"/>
+      <xsd:element name="getProductsResponse" type="tns:getProductsResponse"/>
+      <xsd:element name="getProductByName" type="tns:getProductByName"/>
+      <xsd:element name="getProductByNameResponse" type="tns:getProductByNameResponse"/>
+      <xsd:complexType name="Product">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" name="sku" type="xsd:string"/>
+          <xsd:element minOccurs="1" name="name" type="xsd:string"/>
+          <xsd:element minOccurs="1" name="short_desc" type="xsd:string"/>
+          <xsd:element minOccurs="1" name="long_desc" type="xsd:string"/>
+          <xsd:element minOccurs="1" name="price" type="xsd:string"/>
+          <xsd:element minOccurs="1" name="quantity" type="xsd:string"/>
+          <xsd:element minOccurs="1" name="size" type="xsd:string"/>
+          <xsd:element minOccurs="1" name="category" type="xsd:string"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="getProducts">
+        <xsd:sequence>
+          <xs:element minOccurs="0" name="category" type="xsd:string"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="getProductsResponse">
+        <xsd:sequence>
+          <xsd:element name="product" maxOccurs="unbounded" minOccurs="0" type="tns:Product"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="getProductByName">
+        <xsd:sequence>
+          <xs:element minOccurs="0" name="name" type="xsd:string"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="getProductByNameResponse">
+        <xsd:sequence>
+          <xsd:element name="product" minOccurs="1" maxOccurs="1" type="tns:Product"/>
+        </xsd:sequence>
+      </xsd:complexType>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="getProducts">
+    <wsdl:part element="tns:getProducts" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getProductsResponse">
+    <wsdl:part element="tns:getProductsResponse" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getProductByName">
+    <wsdl:part element="tns:getProductByName" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getProductByNameResponse">
+    <wsdl:part element="tns:getProductByNameResponse" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="ProductEndpoint">
+    <wsdl:operation name="getProducts">
+      <wsdl:input message="tns:getProducts" name="getProducts"/>
+      <wsdl:output message="tns:getProductsResponse" name="getProductsResponse"/>
+    </wsdl:operation>
+    <wsdl:operation name="getProductByName">
+      <wsdl:input message="tns:getProductByName" name="getProductByName"/>
+      <wsdl:output message="tns:getProductByNameResponse" name="getProductByNameResponse"/>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="ProductEndpointServiceSoapBinding" type="tns:ProductEndpoint">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="getProducts">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getProducts">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getProductsResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getProductByName">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getProductByName">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getProductByNameResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="ProductEndpointService">
+    <wsdl:port binding="tns:ProductEndpointServiceSoapBinding" name="ProductEndpointPort">
+      <soap:address location="http://192.168.99.100:32522/cxf/patient"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>]]></con:content><con:type>http://schemas.xmlsoap.org/wsdl/</con:type></con:part></con:definitionCache><con:endpoints><con:endpoint>http://192.168.99.100:32522/cxf/patient</con:endpoint></con:endpoints><con:operation id="17a11912-f0a7-4486-a4d6-b0e9261d28d4" isOneWay="false" action="" name="getProductByName" bindingOperationName="getProductByName" type="Request-Response" outputName="getProductByNameResponse" inputName="getProductByName" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="047f0bcb-2e5b-4d5c-b00c-5e37c993d183" name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://192.168.99.100:32522/cxf/patient</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://ws.products.lbroudoux.github.com/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <ws:getProductByName>
+         <!--Optional:-->
+         <name>?</name>
+      </ws:getProductByName>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://ws.products.lbroudoux.github.com/ProductEndpoint/getProductByName"/><con:wsrmConfig version="1.2"/></con:call></con:operation><con:operation id="d3ed4364-a510-416f-a0a1-406e5d4d9cc5" isOneWay="false" action="" name="getProducts" bindingOperationName="getProducts" type="Request-Response" outputName="getProductsResponse" inputName="getProducts" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="865e03e7-eeab-4e50-ab94-ce56179e9ea2" name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://192.168.99.100:32522/cxf/patient</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://ws.products.lbroudoux.github.com/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <ws:getProducts>
+         <!--Optional:-->
+         <category>?</category>
+      </ws:getProducts>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://ws.products.lbroudoux.github.com/ProductEndpoint/getProducts"/><con:wsrmConfig version="1.2"/></con:call></con:operation></con:interface><con:testSuite id="246051ea-3dba-44b7-890f-386c5a8db251" name="ProductEndpointServiceSoapBinding TestSuite"><con:settings/><con:runType>SEQUENTIAL</con:runType><con:testCase id="4b66a8f8-ea38-4771-81aa-4d5e20c8c5ef" failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="getProductByName TestCase" searchProperties="true"><con:settings/><con:testStep type="request" id="b83d918e-72cb-4b10-a11e-87115f9b4c88" name="Eclair Chocolat Request"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>ProductEndpointServiceSoapBinding</con:interface><con:operation>getProductByName</con:operation><con:request name="Eclair Chocolat Request" id="5b07a121-e007-420c-ba17-9aa708463b88"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/soap/ProductEndpointService+MockService/1.0.0</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://ws.products.lbroudoux.github.com/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <ws:getProductByName>
+         <name>Eclair Chocolat</name>
+      </ws:getProductByName>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig action="http://ws.products.lbroudoux.github.com/ProductEndpoint/getProductByName" mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:testStep type="request" name="Eclair Cafe Request" id="a9678833-1eb2-4bac-8aa3-597d534d0ed2"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>ProductEndpointServiceSoapBinding</con:interface><con:operation>getProductByName</con:operation><con:request name="Eclair Cafe Request" id="0c23b89a-72a0-42e3-956f-5b58f1bc18db"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://192.168.99.100:32522/cxf/patient</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://ws.products.lbroudoux.github.com/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <ws:getProductByName>
+		<name>Eclair Cafe</name>
+      </ws:getProductByName>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:testStep type="request" name="Tartelette Citron Request" id="028a2fdf-573c-480a-8a85-c4b3c589a54e"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>ProductEndpointServiceSoapBinding</con:interface><con:operation>getProductByName</con:operation><con:request name="Tartelette Citron Request" id="af15efe1-ce22-4957-9f03-27ef350c973e"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://192.168.99.100:32522/cxf/patient</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://ws.products.lbroudoux.github.com/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <ws:getProductByName>
+		<name>Tartelette Citron</name>
+      </ws:getProductByName>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:testStep type="request" name="Paris-Brest Request" id="410c0a94-12ca-40b7-8fa0-2a9c28c2c1f2"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>ProductEndpointServiceSoapBinding</con:interface><con:operation>getProductByName</con:operation><con:request name="Paris-Brest Request" id="2a0b6e67-d6c6-49f6-b893-3c150d9740cd"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://192.168.99.100:32522/cxf/patient</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://ws.products.lbroudoux.github.com/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <ws:getProductByName>
+		<name>Paris-Brest</name>
+      </ws:getProductByName>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:testStep type="request" name="Millefeuille Request" id="d95ef239-b69a-4202-9b9a-0e1072d033c9"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>ProductEndpointServiceSoapBinding</con:interface><con:operation>getProductByName</con:operation><con:request name="Millefeuille Request" id="88af320e-0b5c-4c2d-9e8a-7628603a2d88"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://192.168.99.100:32522/cxf/patient</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://ws.products.lbroudoux.github.com/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <ws:getProductByName>
+		<name>Millefeuille</name>
+      </ws:getProductByName>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:properties/></con:testCase><con:testCase id="5ece7f3e-0966-49f4-8ff2-b19ab15c1004" failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="getProducts TestCase" searchProperties="true"><con:settings/><con:testStep type="request" id="a30e1ed8-14ed-459b-b714-0f4a08611928" name="Pastries Request"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>ProductEndpointServiceSoapBinding</con:interface><con:operation>getProducts</con:operation><con:request name="Pastries Request" id="11d1e3f4-9d13-4ad9-a190-a612d13e459a"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://192.168.99.100:32522/cxf/patient</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://ws.products.lbroudoux.github.com/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <ws:getProducts>
+         <category>pastry</category>
+      </ws:getProducts>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig action="http://ws.products.lbroudoux.github.com/ProductEndpoint/getProducts" mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:properties/></con:testCase><con:properties/></con:testSuite><con:mockService id="7cf6a1a6-9ddc-4c2e-96b2-fcc4f0cdafa6" port="8080" path="/" name="ProductService"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.mock.WsdlMockService@require-soap-action">false</con:setting><con:setting id="com.eviware.soapui.impl.wsdl.mock.WsdlMockService@require-soap-version">false</con:setting></con:settings><con:properties><con:property><con:name>version</con:name><con:value>1.0.0</con:value></con:property></con:properties><con:mockOperation name="getProductByName" id="123192de-015e-4094-a8a3-890eee4b28ba" interface="ProductEndpointServiceSoapBinding" operation="getProductByName"><con:settings/><con:defaultResponse>Response 1</con:defaultResponse><con:dispatchStyle>QUERY_MATCH</con:dispatchStyle><con:response name="Eclair Chocolat Response" id="5c55a29f-5a0f-4ced-bd03-31b288099a2a" httpResponseStatus="200" encoding="UTF-8"><con:settings/><con:responseContent><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://ws.products.lbroudoux.github.com/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <ws:getProductByNameResponse>
+         <product>
+            <sku>azerty-1</sku>
+            <name>Eclair Chocolat</name>
+            <short_desc>Delicieux Eclair au Chocolat</short_desc>
+            <long_desc>Delicieux Eclair au Chocolat pas calorique du tout</long_desc>
+            <price>2.2</price>
+            <quantity>200/jour</quantity>
+            <size>M</size>
+            <category>pastry</category>
+         </product>
+      </ws:getProductByNameResponse>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:responseContent><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://ws.products.lbroudoux.github.com/ProductEndpoint/getProductByNameResponse"/></con:response><con:response name="Eclair Cafe Response" id="0e9c894c-29c0-48c7-ae25-964d119d9d94" httpResponseStatus="200" encoding="UTF-8"><con:settings/><con:responseContent><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://ws.products.lbroudoux.github.com/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <ws:getProductByNameResponse>
+         <product>
+            <sku>azerty-2</sku>
+            <name>Eclair Cafe</name>
+            <short_desc>Delicieux Eclair au Cafe</short_desc>
+            <long_desc>Delicieux Eclair au Cafe pas calorique du tout</long_desc>
+            <price>2.5</price>
+            <quantity>180/jour</quantity>
+            <size>M</size>
+            <category>pastry</category>
+         </product>
+      </ws:getProductByNameResponse>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:responseContent><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://ws.products.lbroudoux.github.com/ProductEndpoint/getProductByNameResponse"/></con:response><con:response name="Tartelette Citron Response" id="35316ee3-1c58-4318-a582-bba25b2d61ce" httpResponseStatus="200" encoding="UTF-8"><con:settings/><con:responseContent><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://ws.products.lbroudoux.github.com/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <ws:getProductByNameResponse>
+         <product>
+            <sku>azerty-3</sku>
+            <name>Tartelette au Citron</name>
+            <short_desc>Delicieuse Tartelette au Citron</short_desc>
+            <long_desc>Delicieuse Tartelette au Citron pas calorique du tout</long_desc>
+            <price>2.0</price>
+            <quantity>160/jour</quantity>
+            <size>S</size>
+            <category>pastry</category>
+         </product>
+      </ws:getProductByNameResponse>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:responseContent><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://ws.products.lbroudoux.github.com/ProductEndpoint/getProductByNameResponse"/></con:response><con:response name="Paris-Brest Response" id="fdc2da39-cad3-4b54-8359-56afd5eff823" httpResponseStatus="200" encoding="UTF-8"><con:settings/><con:responseContent><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://ws.products.lbroudoux.github.com/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <ws:getProductByNameResponse>
+         <product>
+            <sku>azerty-4</sku>
+            <name>Paris-Brest</name>
+            <short_desc>Delicieux Paris-Brest</short_desc>
+            <long_desc>Delicieux Paris-Brest pas calorique du tout</long_desc>
+            <price>4.0</price>
+            <quantity>140/jour</quantity>
+            <size>L</size>
+            <category>pastry</category>
+         </product>
+      </ws:getProductByNameResponse>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:responseContent><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://ws.products.lbroudoux.github.com/ProductEndpoint/getProductByNameResponse"/></con:response><con:response name="Millefeuille Response" id="f50386da-562e-4428-b65e-956e1f3f7761" httpResponseStatus="200" encoding="UTF-8"><con:settings/><con:responseContent><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://ws.products.lbroudoux.github.com/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <ws:getProductByNameResponse>
+         <product>
+            <sku>azerty-4</sku>
+            <name>Millefeuille</name>
+            <short_desc>Delicieux Millefeuille</short_desc>
+            <long_desc>Delicieux Millefeuille pas calorique du tout</long_desc>
+            <price>4.4</price>
+            <quantity>250/jour</quantity>
+            <size>L</size>
+            <category>pastry</category>
+         </product>
+      </ws:getProductByNameResponse>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:responseContent><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://ws.products.lbroudoux.github.com/ProductEndpoint/getProductByNameResponse"/></con:response><con:dispatchConfig xsi:type="con:MockOperationQueryMatchDispatch" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:query><con:name>Eclair Chocolat</con:name><con:query>declare namespace ws='http://ws.products.lbroudoux.github.com/';
+//ws:getProductByName/name</con:query><con:match>Eclair Chocolat</con:match><con:response>Eclair Chocolat Response</con:response></con:query><con:query><con:name>Eclair Cafe</con:name><con:query>declare namespace ws='http://ws.products.lbroudoux.github.com/';
+//ws:getProductByName/name</con:query><con:match>Eclair Cafe</con:match><con:response>Eclair Cafe Response</con:response></con:query><con:query><con:name>Tartelette Citron</con:name><con:query>declare namespace ws='http://ws.products.lbroudoux.github.com/';
+//ws:getProductByName/name</con:query><con:match>Tartelette Citron</con:match><con:response>Tartelette Citron Response</con:response></con:query><con:query><con:name>Paris-Brest</con:name><con:query>declare namespace ws='http://ws.products.lbroudoux.github.com/';
+//ws:getProductByName/name</con:query><con:match>Paris-Brest</con:match><con:response>Paris-Brest Response</con:response></con:query><con:query><con:name>Millefeuille</con:name><con:query>declare namespace ws='http://ws.products.lbroudoux.github.com/';
+//ws:getProductByName/name</con:query><con:match>Millefeuille</con:match><con:response>Millefeuille Response</con:response></con:query></con:dispatchConfig></con:mockOperation><con:mockOperation name="getProducts" id="ee370ec7-c117-49a7-ae96-50615c2ca378" interface="ProductEndpointServiceSoapBinding" operation="getProducts"><con:settings/><con:defaultResponse>Response 1</con:defaultResponse><con:dispatchStyle>QUERY_MATCH</con:dispatchStyle><con:response name="Pastries Response" id="f420e547-7fee-4f9a-af59-a776d571bf22" httpResponseStatus="200" encoding="UTF-8"><con:settings/><con:responseContent><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://ws.products.lbroudoux.github.com/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <ws:getProductsResponse>
+         <!--Zero or more repetitions:-->
+         <product>
+            <sku>azerty-1</sku>
+            <name>Eclair Chocolat</name>
+            <short_desc>Delicieux Eclair au Chocolat</short_desc>
+            <long_desc>Delicieux Eclair au Chocolat pas calorique du tout</long_desc>
+            <price>2.2</price>
+            <quantity>200/jour</quantity>
+            <size>M</size>
+            <category>pastry</category>
+         </product>
+         <product>
+            <sku>azerty-3</sku>
+            <name>Tartelette au Citron</name>
+            <short_desc>Delicieuse Tartelette au Citron</short_desc>
+            <long_desc>Delicieuse Tartelette au Citron pas calorique du tout</long_desc>
+            <price>2.0</price>
+            <quantity>160/jour</quantity>
+            <size>S</size>
+            <category>pastry</category>
+         </product>
+         <product>
+            <sku>azerty-2</sku>
+            <name>Eclair Cafe</name>
+            <short_desc>Delicieux Eclair au Cafe</short_desc>
+            <long_desc>Delicieux Eclair au Cafe pas calorique du tout</long_desc>
+            <price>2.5</price>
+            <quantity>180/jour</quantity>
+            <size>M</size>
+            <category>pastry</category>
+         </product>
+         <product>
+            <sku>azerty-4</sku>
+            <name>Paris-Brest</name>
+            <short_desc>Delicieux Paris-Brest</short_desc>
+            <long_desc>Delicieux Paris-Brest pas calorique du tout</long_desc>
+            <price>4.0</price>
+            <quantity>140/jour</quantity>
+            <size>L</size>
+            <category>pastry</category>
+         </product>
+         <product>
+            <sku>azerty-4</sku>
+            <name>Millefeuille</name>
+            <short_desc>Delicieux Millefeuille</short_desc>
+            <long_desc>Delicieux Millefeuille pas calorique du tout</long_desc>
+            <price>4.4</price>
+            <quantity>250/jour</quantity>
+            <size>L</size>
+            <category>pastry</category>
+         </product>
+      </ws:getProductsResponse>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:responseContent><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://ws.products.lbroudoux.github.com/ProductEndpoint/getProductsResponse"/></con:response><con:dispatchConfig xsi:type="con:MockOperationQueryMatchDispatch" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:query><con:name>Pastries</con:name><con:query>declare namespace ws='http://ws.products.lbroudoux.github.com/';
+//ws:getProducts/category</con:query><con:match>pastry</con:match><con:response>Pastries Response</con:response></con:query></con:dispatchConfig></con:mockOperation></con:mockService><con:properties/><con:wssContainer/><con:oAuth2ProfileContainer/><con:sensitiveInformation/></con:soapui-project>

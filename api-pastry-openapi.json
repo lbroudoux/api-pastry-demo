@@ -1,0 +1,120 @@
+{
+    "openapi": "3.0.2",
+    "info": {
+        "title": "API Pastry",
+        "description": "API definition of API Pastry sample app",
+        "contact": {
+            "name": "Laurent Broudoux",
+            "url": "http://github.com/lbroudoux",
+            "email": "laurent.broudoux@gmail.com"
+        },
+        "license": {
+            "name": "MIT License",
+            "url": "https://opensource.org/licenses/MIT"
+        },
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/pastry": {
+            "summary": "Global operations on pastries",
+            "get": {
+                "tags": [
+                    "pastry"
+                ],
+                "summary": "Get list of pastries",
+                "operationId": "GetPastries",
+                "responses": {
+                    "200": {
+                        "description": "Get list of pastries",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Pastry"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/pastry/{name}": {
+            "summary": "Specific operation on pastry",
+            "get": {
+                "summary": "Get Pastry by name",
+                "description": "Get Pastry by name",
+                "operationId": "GetPastryByName",
+                "responses": {
+                    "200": {
+                        "description": "Pastry with specified name",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Pastry"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "parameters": [
+                {
+                    "name": "name",
+                    "in": "path",
+                    "description": "pastry name",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            ]
+        }
+    },
+    "components": {
+        "schemas": {
+            "Pastry": {
+                "title": "Root Type for Pastry",
+                "description": "The root of the Pastry type's schema.",
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "description": "Name of this pastry",
+                        "type": "string"
+                    },
+                    "description": {
+                        "description": "A short description of this pastry",
+                        "type": "string"
+                    },
+                    "size": {
+                        "description": "Size of pastry (S, M, L)",
+                        "type": "string"
+                    },
+                    "price": {
+                        "format": "double",
+                        "description": "Price (in USD) of this pastry",
+                        "type": "number"
+                    },
+                    "status": {
+                        "description": "Status in stock (available, out_of_stock)",
+                        "type": "string"
+                    }
+                },
+                "example": {
+                    "name": "My Pastry",
+                    "description": "A short description os my pastry",
+                    "size": "M",
+                    "price": 4.5,
+                    "status": "available"
+                }
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "pastry",
+            "description": "Pastry resource"
+        }
+    ]
+}
