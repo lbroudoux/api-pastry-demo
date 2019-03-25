@@ -46,6 +46,7 @@ objects:
                 threescale_cicd_openapi_smoketest_operation: "GetPastries",
                 threescale_cicd_api_backend_scheme: "http",
                 threescale_cicd_validate_openapi: "no",
+                threescale_cicd_apicast_policies_cors: "yes",
                 threescale_cicd_private_base_url: "http://api-pastry-fuse-impl:8080"
             ]
 

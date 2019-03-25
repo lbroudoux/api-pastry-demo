@@ -31,6 +31,9 @@
             <div class="form-group">
               <input id="api_endpoint" type="text" class="form-control" placeholder="API_ENDPOINT">
             </div>
+            <div class="form-group">
+              <input id="api_key" type="text" class="form-control" placeholder="API_KEY">
+            </div>
           </div>
         </div>
       </div>
@@ -76,6 +79,11 @@
                   </div>
                 </div>
               </div>
+              <div class="pull-right">
+                <br/>
+                <a class="btn btn-success" role="button" onclick="fetchPastries()">Refresh</a>
+                <br/>
+              </div>
             </div>
           </div>
         </div>
@@ -84,20 +92,15 @@
     <script src="js/jquery.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script>
-    var API_ENDPOINT = "http://localhost:9090";
+    //var API_ENDPOINT = "http://localhost:9090";
+    var API_ENDPOINT = "https://api-pastry-1.prod.app.itix.fr";
+    var API_KEY = "86fd053af0af4cbcc16056552bf32e29";
     var MAX_MSG_DISPLAY = 8;
 
     var username = "John Doe";
     var email = "john.doe@gmail.com";
 
     var products = [
-      {
-        "name": "Eclair au Chocolat",
-        "description":"Delicieux Eclair au Chocolat pas calorique du tout",
-        "size":"M",
-        "price":2.2,
-        "status":"available"
-      },
       {
         "name":"Tartelette au Citron",
         "description":"Delicieuse Tartelette au Citron pas calorique du tout",
@@ -131,12 +134,20 @@
         API_ENDPOINT = value;
       }
     });
+    $("#api_key").blur(function(){
+      var value = $("#api_key").val();
+      if (value === null || value === "") {
+        $("#api_key").val(API_KEY);
+      } else {
+        API_KEY = value;
+      }
+    });
 
     $("#username").blur(function() {
-      var username = $(this).val();
+      username = $(this).val();
     });
     $("#email").blur(function() {
-      var email = $(this).val();
+      email = $(this).val();
     });
 
     $(document).ready(function() {
@@ -149,22 +160,25 @@
         type: "GET",
         url: API_ENDPOINT+"/pastry",
         dataType: 'json',
-        contentType: 'application/json'
+        contentType: 'application/json',
+        headers: {'api-key': API_KEY}
       })
       .done(function() {
       })
       .fail(function(result) {
       })
       .always(function(result) {
-        console.log('In always: ' + JSON.stringify(result));
+        //console.log('In always: ' + JSON.stringify(result));
         if (result != null) {
           if (result.status == null) {
             products = result;
             populatePastries()
+          } else if (result.status === 429) {
+            alert("Sorry but API request quota exceeded !");
+          } else if (result.status === 404 || result.status === 0) {
+            alert("Sorry but pastries are not available ...");
           }
-        } else if (result.status === 404 || result.status === 0) {
-          alert("Sorry but pastries are not available ...");
-        }
+        } 
       });
     }
 
@@ -189,10 +203,11 @@
       var pastryLike = {'pastry': name, 'username': username, 'email': email};
       $.ajax({
         type: "POST",
-        url: SHOP_HOST+"/pastry/like",
+        url: API_ENDPOINT+"/pastry/like",
         dataType: 'json',
         contentType: 'application/json',
         data: JSON.stringify(pastryLike),
+        headers: {'api-key': API_KEY}
       })
       .done(function() {
       })
@@ -201,12 +216,14 @@
       .always(function(result) {
         console.log('In always: ' + JSON.stringify(result));
         if (result != null) {
-          if (result.status === null) {
+          if (result.status == null) {
             alert("Thanks for liking " + name + "!");
+          } else if (result.status === 429) {
+            alert("Sorry but API request quota exceeded !");
           } else if (result.status === 404) {
             alert("Sorry, there's an issue... " + result.error);
           }
-        }
+        } 
       });  
     }
     </script>
