@@ -96,6 +96,14 @@ definitions:
             username:
                 type: string
         example: "{\n  \"pastry\": \"Eclair Chocolat\",\n  \"email\": \"laurent.broudoux@gmail.com\",\n  \"username\": \"Laurent Broudoux\"\n}"
+securityDefinitions:
+    api_key:
+        type: apiKey
+        name: api-key
+        in: header
+security:
+    -
+        api_key: []
 tags:
     -
         name: pastry
