@@ -52,6 +52,7 @@ paths:
         post:
             summary: 'Like Pastry'
             description: 'Like Pastry'
+            operationId: 'LikePastry'
             requestBody:
                 content:
                     application/json:
