@@ -39,12 +39,14 @@ objects:
 
           node('nodejs') {
             def towerExtraVars = [
-                git_repo: params.GIT_REPO,
-                git_branch: params.GIT_BRANCH,
-                openapi_file: "api-pastry-openapi.json",
+                git_repository: params.GIT_REPO,
+                git_ref: params.GIT_BRANCH,
+                openapi_file: "api-pastry-openapi.yaml",
+                threescale_cicd_openapi_file_format: "yaml",
                 threescale_cicd_openapi_smoketest_operation: "GetPastries",
                 threescale_cicd_api_backend_scheme: "http",
-                threescale_cicd_openapi_file_format: "json"
+                threescale_cicd_validate_openapi: "no",
+                threescale_cicd_private_base_url: "http://api-pastry-fuse-impl:8080"
             ]
 
             /*
@@ -60,10 +62,10 @@ objects:
 
             stage('Test in Dev') {
               // Add implementation contract test here.
-              microcksTest(apiURL: 'https://microcks.app.itix.fr/api',
+              microcksTest(server: 'itix-microcks',
                 serviceId: 'API Pastry:1.0.0',
-                testEndpoint: 'http://api-pastry-fuse-impl-api-pastry-dev.app.itix.fr/',
-                runnerType: 'POSTMAN', verbose: 'true')
+                testEndpoint: 'http://api-pastry-fuse-impl-api-pastry-dev.app.itix.fr',
+                runnerType: 'POSTMAN', waitTime: 16, waitUnit: 'sec', verbose: 'true')
             }
 
             stage ('Promote to Prod') {
