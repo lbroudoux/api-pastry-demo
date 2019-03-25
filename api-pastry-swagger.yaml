@@ -67,6 +67,14 @@ definitions:
             status:
                 description: 'Status in stock (available, out_of_stock)'
                 type: string
+securityDefinitions:
+    api_key:
+        type: apiKey
+        name: api-key
+        in: header
+security:
+    -
+        api_key: []
 tags:
     -
         name: pastry
