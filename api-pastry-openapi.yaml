@@ -9,7 +9,7 @@ info:
     license:
         name: 'MIT License'
         url: 'https://opensource.org/licenses/MIT'
-    version: 1.0.0
+    version: 1.1.0
 paths:
     /pastry:
         summary: 'Global operations on pastries'
@@ -48,6 +48,23 @@ paths:
                 required: true
                 schema:
                     type: string
+    /pastry/like:
+        post:
+            summary: 'Like Pastry'
+            description: 'Like Pastry'
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/PastryLike'
+                required: true
+            responses:
+                '200':
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                type: string
 components:
     schemas:
         Pastry:
@@ -77,6 +94,18 @@ components:
                 size: M
                 price: 4.5
                 status: available
+        PastryLike:
+            title: 'Root Type for PastryLike'
+            description: 'The root of the PastryLike type''s schema.'
+            type: object
+            properties:
+                pastry:
+                    type: string
+                email:
+                    type: string
+                username:
+                    type: string
+            example: "{\n  \"pastry\": \"Eclair Chocolat\",\n  \"email\": \"laurent.broudoux@gmail.com\",\n  \"username\": \"Laurent Broudoux\"\n}"
 tags:
     -
         name: pastry
