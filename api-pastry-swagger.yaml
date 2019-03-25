@@ -1,0 +1,73 @@
+swagger: '2.0'
+info:
+    title: 'API Pastry'
+    description: 'A brand new API with no content.  Go nuts!'
+    contact:
+        name: 'Laurent Broudoux'
+        url: 'http://github.com/lbroudoux'
+        email: laurent.broudoux@gmail.com
+    license:
+        name: 'MIT License'
+        url: 'https://opensource.org/licenses/MIT'
+    version: '1.0.0'
+consumes:
+    - application/json
+produces:
+    - application/json
+paths:
+    /pastry:
+        get:
+            tags:
+                - pastry
+            summary: 'Get list of pastries'
+            operationId: GetPastries
+            responses:
+                '200':
+                    description: 'Get list of pastries'
+                    schema:
+                        type: array
+                        items:
+                            $ref: '#/definitions/Pastry'
+    '/pastry/{name}':
+        get:
+            tags:
+                - pastry
+            summary: 'Get Pastry by name'
+            description: 'Get Pastry by name'
+            operationId: GetPastryByName
+            responses:
+                '200':
+                    description: 'Pastry with specified name'
+                    schema:
+                        $ref: '#/definitions/Pastry'
+        parameters:
+            -
+                name: name
+                in: path
+                description: 'pastry name'
+                required: true
+                type: string
+definitions:
+    Pastry:
+        description: 'The root of the Pastry type''s schema.'
+        properties:
+            name:
+                description: 'Name of this pastry'
+                type: string
+            description:
+                description: 'A short description of this pastry'
+                type: string
+            size:
+                description: 'Size of pastry (S, M, L)'
+                type: string
+            price:
+                format: double
+                description: 'Price (in USD) of this pastry'
+                type: number
+            status:
+                description: 'Status in stock (available, out_of_stock)'
+                type: string
+tags:
+    -
+        name: pastry
+        description: ""
