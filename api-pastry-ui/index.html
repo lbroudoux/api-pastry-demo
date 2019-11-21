@@ -76,6 +76,11 @@
                   </div>
                 </div>
               </div>
+              <div class="pull-right">
+                <br/>
+                <a class="btn btn-success" role="button" onclick="fetchPastries()">Refresh</a>
+                <br/>
+              </div>
             </div>
           </div>
         </div>
@@ -84,7 +89,15 @@
     <script src="js/jquery.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script>
-    var API_ENDPOINT = "http://localhost:9090";
+    //var API_ENDPOINT = "http://localhost:9090";
+    // Developement configuration
+    var API_ENDPOINT = "http://api-pastry-fuse-impl-api-pastry-dev.apps.144.76.24.92.nip.io";
+    var API_KEY = "";
+    /*
+    // Production configuration
+    var API_ENDPOINT = "https://api-pastry-api-v1-api-pastry-prod.apps.144.76.24.92.nip.io";
+    var API_KEY = "86fd053af0af4cbcc16056552bf32e29";
+    */
     var MAX_MSG_DISPLAY = 8;
 
     var username = "John Doe";
@@ -133,10 +146,10 @@
     });
 
     $("#username").blur(function() {
-      var username = $(this).val();
+      username = $(this).val();
     });
     $("#email").blur(function() {
-      var email = $(this).val();
+      email = $(this).val();
     });
 
     $(document).ready(function() {
@@ -145,12 +158,16 @@
     });
 
     function fetchPastries() {
-      $.ajax({
+      var options = {
         type: "GET",
         url: API_ENDPOINT+"/pastry",
         dataType: 'json',
         contentType: 'application/json'
-      })
+      };
+      if (API_KEY != "") {
+        options['headers'] = {'api-key': API_KEY};
+      }
+      $.ajax(options)
       .done(function() {
       })
       .fail(function(result) {
@@ -189,7 +206,7 @@
       var pastryLike = {'pastry': name, 'username': username, 'email': email};
       $.ajax({
         type: "POST",
-        url: SHOP_HOST+"/pastry/like",
+        url: API_ENDPOINT+"/pastry/like",
         dataType: 'json',
         contentType: 'application/json',
         data: JSON.stringify(pastryLike),
