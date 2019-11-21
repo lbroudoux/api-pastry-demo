@@ -22,34 +22,8 @@ objects:
       type: None
     strategy:
       jenkinsPipelineStrategy:
-        env:
-        - name: GIT_BRANCH
-          value: master
-        - name: GIT_REPO
-          value: https://github.com/lbroudoux/api-pastry-demo.git
-        - name: ANSIBLE_PROD_INVENTORY
-          value: 3scale-api-pastry-prod
-        - name: ANSIBLE_JOB_TEMPLATE
-          value: Deploy an API to 3scale
-        - name: TOWER_SERVER
-          value: tower
         jenkinsfile: |-
-          #!/usr/bin/env groovy
-          import groovy.json.JsonOutput
-
           node('nodejs') {
-            def towerExtraVars = [
-                git_repository: params.GIT_REPO,
-                git_ref: params.GIT_BRANCH,
-                openapi_file: "api-pastry-openapi.yaml",
-                threescale_cicd_openapi_file_format: "yaml",
-                threescale_cicd_openapi_smoketest_operation: "GetPastries",
-                threescale_cicd_api_backend_scheme: "http",
-                threescale_cicd_validate_openapi: "no",
-                threescale_cicd_apicast_policies_cors: "yes",
-                threescale_cicd_private_base_url: "http://api-pastry-fuse-impl:8080"
-            ]
-
             /*
             stage ('Build in Dev') {
               openshiftBuild(buildConfig: 'api-pastry-impl',
@@ -63,9 +37,9 @@ objects:
 
             stage('Test in Dev') {
               // Add implementation contract test here.
-              microcksTest(server: 'itix-microcks',
+              microcksTest(server: 'openshift311',
                 serviceId: 'API Pastry:1.0.0',
-                testEndpoint: 'http://api-pastry-fuse-impl-api-pastry-dev.app.itix.fr',
+                testEndpoint: 'http://api-pastry-fuse-impl-api-pastry-dev.apps.144.76.24.92.nip.io',
                 runnerType: 'POSTMAN', waitTime: 16, waitUnit: 'sec', verbose: 'true')
             }
 
@@ -78,10 +52,7 @@ objects:
               openshiftDeploy(deploymentConfig: 'api-pastry-fuse-impl', namespace: 'api-pastry-prod')
               openshiftScale(deploymentConfig: 'api-pastry-fuse-impl', namespace: 'api-pastry-prod', replicaCount: '2')
               // Deploy the API to 3scale
-              ansibleTower towerServer: params.TOWER_SERVER,
-                          inventory: params.ANSIBLE_PROD_INVENTORY,
-                          jobTemplate: params.ANSIBLE_JOB_TEMPLATE,
-                          extraVars: JsonOutput.toJson(towerExtraVars)
+              openshiftBuild(buildConfig: 'deploy-3scale-api-api-pastry-prod', namespace: 'microcks', showBuildLogs: 'true')
               // Force redeployment of gateway
               openshiftDeploy(deploymentConfig: 'api-pastry-api', namespace: 'api-pastry-prod')
             }

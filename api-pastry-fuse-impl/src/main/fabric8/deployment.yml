@@ -15,7 +15,7 @@ spec:
           - name: SPRING_APPLICATION_JSON
             value: '{"server":{"undertow":{"io-threads":1, "worker-threads":2 }}}'
           - name: PRODUCT_WS_URL
-            value: https://microcks.app.itix.fr/soap/ProductService/1.0.0
+            value: http://microcks.apps.144.76.24.92.nip.io/soap/ProductService/1.0.0
           - name: KAFKA_BROKER_URL
             value: my-cluster-kafka-bootstrap.amq-streams.svc.cluster.local:9092
           readinessProbe:

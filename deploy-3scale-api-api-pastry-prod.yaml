@@ -1,0 +1,59 @@
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  annotations:
+    openshift.io/generated-by: OpenShiftNewApp
+  labels:
+    app: deploy-3scale-api
+    template: deploy-3scale-api
+  name: deploy-3scale-api-api-pastry-prod
+spec:
+  failedBuildsHistoryLimit: 5
+  nodeSelector: null
+  output: {}
+  postCommit: {}
+  resources: {}
+  runPolicy: Serial
+  source:
+    git:
+      ref: master
+      uri: 'https://github.com/lbroudoux/api-pastry-demo.git'
+    type: Git
+  strategy:
+    customStrategy:
+      env:
+        - name: THREESCALE_CICD_OPENAPI_FILE_FORMAT
+          value: json
+        - name: OPENAPI_FILE
+          value: api-pastry-swagger.json
+        - name: THREESCALE_CICD_API_BASE_SYSTEM_NAME
+          value: api
+        - name: THREESCALE_CICD_API_SYSTEM_NAME
+          value: prod_api_pastry_1
+        - name: THREESCALE_CICD_WILDCARD_DOMAIN
+        - name: THREESCALE_CICD_PRIVATE_BASE_URL
+          value: 'http://api-pastry-fuse-impl:8080'
+        - name: THREESCALE_CICD_APICAST_POLICIES_CORS
+          value: 'true'
+        - name: THREESCALE_CICD_OPENAPI_SMOKETEST_OPERATION
+        - name: THREESCALE_CICD_API_ENVIRONMENT_NAME
+          value: prod
+        - name: THREESCALE_CICD_VALIDATE_OPENAPI
+        - name: THREESCALE_CICD_APICAST_SANDBOX_ENDPOINT
+          value: 'https://api-pastry-api-v1-api-pastry-prod.apps.144.76.24.92.nip.io'
+        - name: THREESCALE_CICD_APICAST_PRODUCTION_ENDPOINT
+          value: 'https://api-pastry-api-v1-api-pastry-prod.apps.144.76.24.92.nip.io'
+        - name: THREESCALE_CICD_CREATE_DEFAULT_APPLICATION
+          value: 'true'
+      from:
+        kind: ImageStreamTag
+        name: 'threescale-cicd:master'
+      secrets:
+        - mountPath: /tmp/secrets
+          secretSource:
+            name: 3scale-admin-portal-api-pastry-prod
+    type: Custom
+  successfulBuildsHistoryLimit: 5
+  triggers:
+    - type: ConfigChange
+

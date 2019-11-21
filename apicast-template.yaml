@@ -127,8 +127,7 @@ parameters:
   name: APICAST_NAME
   required: true
   value: apicast
-- description: A 3scale Access Token having read-only access to the Account Management
-    API
+- description: A 3scale Access Token having read-only access to the Account Management API
   name: ACCESS_TOKEN
   required: true
 - description: The name of your 3scale tenant

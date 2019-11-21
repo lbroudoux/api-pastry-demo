@@ -93,8 +93,14 @@
     <script src="js/bootstrap.min.js"></script>
     <script>
     //var API_ENDPOINT = "http://localhost:9090";
-    var API_ENDPOINT = "https://api-pastry-1.prod.app.itix.fr";
+    /* // Developement configuration
+    var API_ENDPOINT = "http://api-pastry-fuse-impl-api-pastry-dev.apps.144.76.24.92.nip.io";
+    var API_KEY = "";
+    */
+    // Production configuration
+    var API_ENDPOINT = "https://api-pastry-api-v1-api-pastry-prod.apps.144.76.24.92.nip.io";
     var API_KEY = "86fd053af0af4cbcc16056552bf32e29";
+    
     var MAX_MSG_DISPLAY = 8;
 
     var username = "John Doe";
@@ -156,13 +162,16 @@
     });
 
     function fetchPastries() {
-      $.ajax({
+      var options = {
         type: "GET",
         url: API_ENDPOINT+"/pastry",
         dataType: 'json',
-        contentType: 'application/json',
-        headers: {'api-key': API_KEY}
-      })
+        contentType: 'application/json'
+      };
+      if (API_KEY != "") {
+        options['headers'] = {'api-key': API_KEY};
+      }
+      $.ajax(options)
       .done(function() {
       })
       .fail(function(result) {
@@ -191,7 +200,7 @@
         prodContent += '<div class="text-center"><b>' + item.name;
         prodContent += '</b><br/> Size ' + item.size;
         prodContent += ' - ' + item.price + ' USD<br/>';
-        prodContent += '<br/><a class="btn btn-danger" role="button" onclick="likePastry(\'' + item.name + '\')">Like it!</a>';
+        //prodContent += '<br/><a class="btn btn-danger" role="button" onclick="likePastry(\'' + item.name + '\')">Like it!</a>';
         prodContent += '<br/><br/></div></div>';
         pastriesDivContent += prodContent;
       });
