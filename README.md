@@ -1,5 +1,10 @@
 # api-pastry-demo
+
 API Pastry Demo using Agile Integration Solutions
+
+[![Contribute](https://che.openshift.io/factory/resources/factory-contribute.svg)]
+(http://http://che-eclipse-che.apps.cluster-paris-e9b4.paris-e9b4.example.opentlc.com/f?url=https://github.com/lbroudoux/api-pastry-demo)
+
 
 ```
 oc new-project api-pastry-dev --display-name="API Pastry (DEV)"
