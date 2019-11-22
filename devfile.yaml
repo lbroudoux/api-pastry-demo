@@ -21,9 +21,6 @@ components:
   - id: redhat/workshop-tools/3.0
     type: chePlugin
     alias: workshop-tools
-    env:
-      - name: MAVEN_MIRROR_URL
-        value: ''
 commands:
   - name: 'OpenShift - Login'
     actions:
