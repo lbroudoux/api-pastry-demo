@@ -7,7 +7,8 @@
 	<name>API Pastry</name>
 	<description>Camel implementation for the API Pastry API</description>
 	<properties>
-		<fuse.version>7.2.0.fuse-720020-redhat-00001</fuse.version>
+		<!-- <fuse.version>7.2.0.fuse-720020-redhat-00001</fuse.version> -->
+		<fuse.version>7.5.0.fuse-750029-redhat-00002</fuse.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 	<dependencyManagement>

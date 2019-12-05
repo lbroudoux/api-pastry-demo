@@ -57,12 +57,6 @@
                 <description>Get Pastry by name</description>
                 <to uri="direct:GetPastryByName"/>
             </get>
-            <!--
-            <post id="LikePastry" uri="/pastry/like">
-                <description>Like Pastry from user</description>
-                <to uri="direct:LikePastry"/>
-            </post>
-            -->
         </rest>
         <route id="route-7f3dbf12-fab4-46cc-9526-2823d400d0ec">
             <from id="from-741a66cd-d150-4e91-878f-5f5575928f31" uri="direct:GetPastries"/>
